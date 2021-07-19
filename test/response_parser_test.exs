@@ -39,7 +39,8 @@ defmodule ResponseParserTest do
   end
 
   test "handle_response/3 value" do
-    assert DummyParser.handle_response("foo", 200, %{"status" => 0, "value" => "value"}) == "value"
+    assert DummyParser.handle_response("foo", 200, %{"status" => 0, "value" => "value"}) ==
+             "value"
   end
 
   test "handle_response/3 success" do

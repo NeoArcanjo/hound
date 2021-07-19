@@ -1,14 +1,19 @@
 defmodule HoundNotSupportedErrorTest do
   use ExUnit.Case
 
+  @tag :skip
+
   test "message" do
-    {:ok, info} = Hound.ConnectionServer.driver_info
+    {:ok, info} = Hound.ConnectionServer.driver_info()
     function_name = "foo"
-    err = try do
-            raise Hound.NotSupportedError, function: function_name
-          rescue
-            e -> Exception.message(e)
-          end
+
+    err =
+      try do
+        raise Hound.NotSupportedError, function: function_name
+      rescue
+        e -> Exception.message(e)
+      end
+
     assert err =~ "not supported"
     assert err =~ function_name
     assert err =~ info.driver
@@ -25,12 +30,15 @@ defmodule HoundNotSupportedErrorTest do
   end
 
   test "raise_for" do
-    if match?({:ok, %{driver: "selenium", browser: "firefox"}}, Hound.ConnectionServer.driver_info) do
+    if match?(
+         {:ok, %{driver: "selenium", browser: "firefox"}},
+         Hound.ConnectionServer.driver_info()
+       ) do
       assert_raise Hound.NotSupportedError, fn ->
-        DummyRaiser.foo
+        DummyRaiser.foo()
       end
     else
-      assert DummyRaiser.foo == :ok
+      assert DummyRaiser.foo() == :ok
     end
   end
 end

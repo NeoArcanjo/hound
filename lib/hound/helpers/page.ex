@@ -4,27 +4,26 @@ defmodule Hound.Helpers.Page do
   import Hound.RequestUtils
 
   @doc "Gets the HTML source of current page."
-  @spec page_source() :: String.t
+  @spec page_source() :: String.t()
   def page_source do
-    session_id = Hound.current_session_id
+    session_id = Hound.current_session_id()
     make_req(:get, "session/#{session_id}/source")
   end
 
   @doc "Gets the visible text of current page."
-  @spec visible_page_text() :: String.t
+  @spec visible_page_text() :: String.t()
   def visible_page_text do
     element = find_element(:css, "body")
-    session_id = Hound.current_session_id
+    session_id = Hound.current_session_id()
     make_req(:get, "session/#{session_id}/element/#{element}/text")
   end
 
   @doc "Gets the title of the current page."
-  @spec page_title() :: String.t
+  @spec page_title() :: String.t()
   def page_title do
-    session_id = Hound.current_session_id
+    session_id = Hound.current_session_id()
     make_req(:get, "session/#{session_id}/title")
   end
-
 
   @doc """
   Finds element on current page. It returns an element that can be used with other element functions.
@@ -43,29 +42,33 @@ defmodule Hound.Helpers.Page do
       find_element(:tag, "footer")
       find_element(:link_text, "Home")
   """
-  @spec find_element(Hound.Element.strategy, String.t, non_neg_integer) :: Hound.Element.t
+  @spec find_element(Hound.Element.strategy(), String.t(), non_neg_integer) :: Hound.Element.t()
   def find_element(strategy, selector, retries \\ 5) do
     case search_element(strategy, selector, retries) do
-      {:ok, element} -> element
+      {:ok, element} ->
+        element
+
       {:error, :no_such_element} ->
         raise Hound.NoSuchElementError, strategy: strategy, selector: selector
+
       {:error, err} ->
-        raise Hound.Error, "could not get element {#{inspect(strategy)}, #{inspect(selector)}}: #{inspect(err)}"
+        raise Hound.Error,
+              "could not get element {#{inspect(strategy)}, #{inspect(selector)}}: #{inspect(err)}"
     end
   end
 
   @doc """
   Same as `find_element/3`, but returns the a tuple with `{:error, error}` instead of raising
   """
-  @spec search_element(Hound.Element.strategy, String.t, non_neg_integer) :: {:ok, Hound.Element.t} | {:error, any}
+  @spec search_element(Hound.Element.strategy(), String.t(), non_neg_integer) ::
+          {:ok, Hound.Element.t()} | {:error, any}
   def search_element(strategy, selector, retries \\ 5) do
-    session_id = Hound.current_session_id
+    session_id = Hound.current_session_id()
     params = %{using: Hound.InternalHelpers.selector_strategy(strategy), value: selector}
 
-    make_req(:post, "session/#{session_id}/element", params, %{safe: true}, retries*2)
+    make_req(:post, "session/#{session_id}/element", params, %{safe: true}, retries * 2)
     |> process_element_response
   end
-
 
   @doc """
   Finds elements on current page. Returns an array of elements that can be used with other element functions.
@@ -82,19 +85,19 @@ defmodule Hound.Helpers.Page do
       find_all_elements(:tag, "footer")
       find_all_elements(:link_text, "Home")
   """
-  @spec find_all_elements(atom, String.t, non_neg_integer) :: list
+  @spec find_all_elements(atom, String.t(), non_neg_integer) :: list
   def find_all_elements(strategy, selector, retries \\ 5) do
-    session_id = Hound.current_session_id
+    session_id = Hound.current_session_id()
     params = %{using: Hound.InternalHelpers.selector_strategy(strategy), value: selector}
 
-    case make_req(:post, "session/#{session_id}/elements", params, %{}, retries*2) do
+    case make_req(:post, "session/#{session_id}/elements", params, %{}, retries * 2) do
       {:error, value} ->
         {:error, value}
+
       elements ->
         Enum.map(elements, &Hound.Element.from_response/1)
     end
   end
-
 
   @doc """
   Finds element within a specific element. Returns an element to use with element helper functions.
@@ -115,29 +118,48 @@ defmodule Hound.Helpers.Page do
       find_within_element(parent_element, :tag, "footer")
       find_within_element(parent_element, :link_text, "Home")
   """
-  @spec find_within_element(Hound.Element.t, Hound.Element.strategy, String.t, non_neg_integer) :: Hound.Element.t
+  @spec find_within_element(
+          Hound.Element.t(),
+          Hound.Element.strategy(),
+          String.t(),
+          non_neg_integer
+        ) :: Hound.Element.t()
   def find_within_element(element, strategy, selector, retries \\ 5) do
     case search_within_element(element, strategy, selector, retries) do
       {:error, :no_such_element} ->
         raise Hound.NoSuchElementError, strategy: strategy, selector: selector, parent: element
+
       {:error, err} ->
-        raise Hound.Error, "could not get element {#{inspect(strategy)}, #{inspect(selector)}} in #{element}: #{inspect(err)}"
-      {:ok, element} -> element
+        raise Hound.Error,
+              "could not get element {#{inspect(strategy)}, #{inspect(selector)}} in #{element}: #{inspect(err)}"
+
+      {:ok, element} ->
+        element
     end
   end
 
   @doc """
   Same as `find_within_element/4`, but returns a `{:error, err}` tuple instead of raising
   """
-  @spec search_within_element(Hound.Element.t, Hound.Element.strategy, String.t, non_neg_integer) :: {:ok, Hound.Element.t} | {:error, any}
+  @spec search_within_element(
+          Hound.Element.t(),
+          Hound.Element.strategy(),
+          String.t(),
+          non_neg_integer
+        ) :: {:ok, Hound.Element.t()} | {:error, any}
   def search_within_element(element, strategy, selector, retries \\ 5) do
-    session_id = Hound.current_session_id
+    session_id = Hound.current_session_id()
     params = %{using: Hound.InternalHelpers.selector_strategy(strategy), value: selector}
 
-    make_req(:post, "session/#{session_id}/element/#{element}/element", params, %{safe: true}, retries*2)
+    make_req(
+      :post,
+      "session/#{session_id}/element/#{element}/element",
+      params,
+      %{safe: true},
+      retries * 2
+    )
     |> process_element_response
   end
-
 
   @doc """
   Finds elements within a specific element. Returns an array of elements that can be used with other element functions.
@@ -158,28 +180,34 @@ defmodule Hound.Helpers.Page do
       find_all_within_element(parent_element, :tag, "footer")
       find_all_within_element(parent_element, :link_text, "Home")
   """
-  @spec find_all_within_element(Hound.Element.t, atom, String.t, non_neg_integer) :: list
+  @spec find_all_within_element(Hound.Element.t(), atom, String.t(), non_neg_integer) :: list
   def find_all_within_element(element, strategy, selector, retries \\ 5) do
-    session_id = Hound.current_session_id
+    session_id = Hound.current_session_id()
     params = %{using: Hound.InternalHelpers.selector_strategy(strategy), value: selector}
 
-    case make_req(:post, "session/#{session_id}/element/#{element}/elements", params, %{}, retries*2) do
+    case make_req(
+           :post,
+           "session/#{session_id}/element/#{element}/elements",
+           params,
+           %{},
+           retries * 2
+         ) do
       {:error, value} ->
         {:error, value}
+
       elements ->
         Enum.map(elements, &Hound.Element.from_response/1)
     end
   end
 
-
   @doc "Gets element on page that is currently in focus."
   @spec element_in_focus() :: map
   def element_in_focus do
-    session_id = Hound.current_session_id
-    make_req(:post, "session/#{session_id}/element/active")
-    |> Hound.Element.from_response
-  end
+    session_id = Hound.current_session_id()
 
+    make_req(:post, "session/#{session_id}/element/active")
+    |> Hound.Element.from_response()
+  end
 
   @doc """
   Holds on to the specified modifier keys when the block is executing.
@@ -204,13 +232,13 @@ defmodule Hound.Helpers.Page do
   """
   defmacro with_keys(keys, blocks) do
     do_block = Keyword.get(blocks, :do, nil)
+
     quote do
       send_keys(unquote(keys))
       unquote(do_block)
       send_keys(:null)
     end
   end
-
 
   @doc """
   Send sequence of key strokes to active element.
@@ -258,13 +286,15 @@ defmodule Hound.Helpers.Page do
   @spec send_keys(list | atom) :: :ok
   def send_keys(keys) when is_atom(keys) or is_list(keys) do
     keys = List.wrap(keys)
-    session_id = Hound.current_session_id
-    make_req(:post,
+    session_id = Hound.current_session_id()
+
+    make_req(
+      :post,
       "session/#{session_id}/keys",
       Hound.InternalHelpers.key_codes_json(keys),
-      %{json_encode: false})
+      %{json_encode: false}
+    )
   end
-
 
   @doc """
   Send character keys to active element.
@@ -274,19 +304,22 @@ defmodule Hound.Helpers.Page do
 
   To send key strokes like tab, enter, etc, take a look at `send_keys`.
   """
-  @spec send_text(String.t) :: :ok
+  @spec send_text(String.t()) :: :ok
   def send_text(keys) do
-    session_id = Hound.current_session_id
+    session_id = Hound.current_session_id()
     %Hound.Element{uuid: uuid} = element_in_focus()
     make_req(:post, "session/#{session_id}/element/#{uuid}/value", %{value: [keys]})
   end
 
   defp process_element_response(%{"ELEMENT" => element_id}),
     do: {:ok, %Hound.Element{uuid: element_id}}
+
   defp process_element_response(%{"element-6066-11e4-a52e-4f735466cecf" => element_id}),
     do: {:ok, %Hound.Element{uuid: element_id}}
+
   defp process_element_response({:error, _err} = error),
     do: error
+
   defp process_element_response(unknown_error),
     do: {:error, unknown_error}
 end

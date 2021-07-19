@@ -5,31 +5,29 @@ defmodule WindowTest do
   hound_session()
 
   test "should set and get the window size" do
-    set_window_size current_window_handle(), 600, 400
+    set_window_size(current_window_handle(), 600, 400)
     {width, height} = window_size(current_window_handle())
-    assert width  == 600
+    assert width == 600
     assert height == 400
   end
 
-
   test "should maximize the window" do
-    set_window_size current_window_handle(), 0, 0
+    set_window_size(current_window_handle(), 0, 0)
     {width, height} = window_size(current_window_handle())
-    assert width  > 0
+    assert width > 0
     assert height > 0
   end
 
-
   test "switch to a frame" do
-    navigate_to "http://localhost:9090/page1.html"
-    assert length(find_all_elements :class, "child-para") == 0
+    navigate_to("http://localhost:9090/page1.html")
+    assert Enum.empty?(find_all_elements(:class, "child-para"))
 
     focus_frame(0)
-    assert length(find_all_elements :class, "child-para") > 0
+    reject(Enum.empty?(find_all_elements(:class, "child-para")))
   end
 
   test "focus window" do
-    navigate_to "http://localhost:9090/page1.html"
+    navigate_to("http://localhost:9090/page1.html")
     assert Enum.count(window_handles()) == 1
     execute_script("window.open('http://localhost:9090/page2.html')", [])
     assert Enum.count(window_handles()) == 2
@@ -40,7 +38,7 @@ defmodule WindowTest do
   end
 
   test "close window" do
-    navigate_to "http://localhost:9090/page1.html"
+    navigate_to("http://localhost:9090/page1.html")
     assert Enum.count(window_handles()) == 1
     execute_script("window.open('http://localhost:9090/page2.html')", [])
     assert Enum.count(window_handles()) == 2
@@ -53,14 +51,14 @@ defmodule WindowTest do
 
   if Hound.InternalHelpers.driver_supports?("focus_parent_frame") do
     test "switch to a frame and switch back to parent frame" do
-      navigate_to "http://localhost:9090/page1.html"
-      assert length(find_all_elements :class, "child-para") == 0
+      navigate_to("http://localhost:9090/page1.html")
+      assert Enum.empty?(find_all_elements(:class, "child-para"))
 
       focus_frame(0)
-      assert length(find_all_elements :class, "child-para") > 0
+      reject(Enum.empty?(find_all_elements(:class, "child-para")))
 
       focus_parent_frame()
-      assert length(find_all_elements :class, "child-para") == 0
+      assert Enum.empty?(find_all_elements(:class, "child-para"))
     end
   end
 end

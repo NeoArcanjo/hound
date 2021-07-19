@@ -2,6 +2,7 @@ defmodule ElementTest do
   use ExUnit.Case
 
   alias Hound.Element
+  @tag :skip
 
   test "encoding to JSON" do
     uuid = "some-uuid"

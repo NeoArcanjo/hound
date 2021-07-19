@@ -4,7 +4,7 @@ defmodule Hound.Browser.DefaultTest do
   alias Hound.Browser.Default
 
   test "default_user_agent" do
-    assert Default.default_user_agent == :default
+    assert Default.default_user_agent() == :default
   end
 
   test "default_capabilities" do

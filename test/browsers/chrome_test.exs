@@ -4,7 +4,7 @@ defmodule Hound.Browser.ChromeTest do
   alias Hound.Browser.Chrome
 
   test "default_user_agent" do
-    assert Chrome.default_user_agent == :chrome
+    assert Chrome.default_user_agent() == :chrome
   end
 
   test "default_capabilities" do

@@ -4,7 +4,7 @@ defmodule Hound.Browser.PhantomJSTest do
   alias Hound.Browser.PhantomJS
 
   test "default_user_agent" do
-    assert PhantomJS.default_user_agent == :phantomjs
+    assert PhantomJS.default_user_agent() == :phantomjs
   end
 
   test "default_capabilities" do

@@ -1,6 +1,7 @@
+# TODO
+
 * alias start_session and end_session to Hound.Session helpers
 * find_element and find_all_element: is it timeout_in_seconds or retries
-
 * Window size, position, maximize, close window, focus frame
 * Mouse
 * Geo location
@@ -9,8 +10,9 @@
 * Session log
 * Application cache status
 
+## Just using this as a dumping ground
 
-# Just using this as a dumping ground
+``` elixir
 defmodule Hound.JsonDriver.Ime do
   @moduledoc false
   # import Hound.JsonDriver.Utils
@@ -35,3 +37,4 @@ defmodule Hound.JsonDriver.Ime do
   # @spec deactivate_current_img_engine() :: :ok
   # def deactivate_current_ime_engine()
 end
+```

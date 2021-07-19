@@ -14,15 +14,16 @@ defmodule Hound.Helpers.ScriptExecution do
 
           execute_script("doSomething(); return(arguments[0] + arguments[1]);")
   """
-  @spec execute_script(String.t, list) :: any
+  @spec execute_script(String.t(), list) :: any
   def execute_script(script_function, function_args \\ []) do
-    session_id = Hound.current_session_id
-    make_req(:post,
+    session_id = Hound.current_session_id()
+
+    make_req(
+      :post,
       "session/#{session_id}/execute",
       %{script: script_function, args: function_args}
     )
   end
-
 
   @doc """
   Execute javascript asynchronously.
@@ -45,10 +46,12 @@ defmodule Hound.Helpers.ScriptExecution do
   Unless you call the callback function, the function is not assumed to be completed.
   It will error out.
   """
-  @spec execute_script_async(String.t, list) :: any
+  @spec execute_script_async(String.t(), list) :: any
   def execute_script_async(script_function, function_args \\ []) do
-    session_id = Hound.current_session_id
-    make_req(:post,
+    session_id = Hound.current_session_id()
+
+    make_req(
+      :post,
       "session/#{session_id}/execute_async",
       %{script: script_function, args: function_args}
     )
@@ -78,10 +81,12 @@ defmodule Hound.Helpers.ScriptExecution do
      };
 
   """
-  @spec execute_phantom_script(String.t, list) :: any
+  @spec execute_phantom_script(String.t(), list) :: any
   def execute_phantom_script(script_function, function_args \\ []) do
-    session_id = Hound.current_session_id
-    make_req(:post,
+    session_id = Hound.current_session_id()
+
+    make_req(
+      :post,
       "/session/#{session_id}/phantom/execute",
       %{script: script_function, args: function_args}
     )

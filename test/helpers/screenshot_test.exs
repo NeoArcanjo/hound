@@ -9,5 +9,4 @@ defmodule ScreenshotTest do
     path = take_screenshot("screenshot-test.png")
     assert File.exists?(path)
   end
-
 end

@@ -1,8 +1,10 @@
-Make sure to [configure Hound](https://github.com/HashNuke/hound/blob/master/notes/configuring-hound.md) first, or you will get an error.
+# Sample
+
+Make sure to [configure Hound](http://192.168.0.190/rafael/hound/blob/master/notes/configuring-hound.md) first, or you will get an error.
 
 ## Simple browser automation using Hound
 
-```elixir
+``` elixir
 Application.start :hound
 
 defmodule Example do

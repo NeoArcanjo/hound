@@ -2,13 +2,13 @@
 
 For browser automation and writing integration tests in Elixir.
 
-<a href="http://github.com/HashNuke/Hound" target="_parent">Source</a> | <a href="http://hexdocs.pm/hound" target="_parent">Documentation</a>
+<a href="http://192.168.0.190/rafael/hound" target="_parent">Source</a> | <a href="http://hexdocs.pm/hound" target="_parent">Documentation</a>
 
 [![Build Status](https://travis-ci.org/HashNuke/hound.png?branch=master)](https://travis-ci.org/HashNuke/hound)
 
 ## Features
 
-* Can run __multiple browser sessions__ simultaneously. [See example](https://github.com/HashNuke/hound/blob/master/test/multiple_browser_session_test.exs).
+* Can run __multiple browser sessions__ simultaneously. [See example](https://192.168.0.190/rafael/hound/blob/master/test/multiple_browser_session_test.exs).
 
 * Supports Selenium (Firefox, Chrome), ChromeDriver and PhantomJs.
 
@@ -42,7 +42,7 @@ defmodule HoundTest do
 end
 ```
 
-Here's another [simple browser-automation example](https://github.com/HashNuke/hound/blob/master/notes/simple-browser-automation.md).
+Here's another [simple browser-automation example](https://192.168.0.190/rafael/hound/blob/master/notes/simple-browser-automation.md).
 
 ## Setup
 
@@ -62,7 +62,7 @@ Application.ensure_all_started(:hound)
 ExUnit.start()
 ```
 
-When you run `mix test`, Hound is automatically started. __You'll need a webdriver server__ running, like Selenium Server or Chrome Driver. If you aren't sure what it is, then [read this](https://github.com/HashNuke/hound/wiki/Starting-a-webdriver-server).
+When you run `mix test`, Hound is automatically started. __You'll need a webdriver server__ running, like Selenium Server or Chrome Driver. If you aren't sure what it is, then [read this](https://192.168.0.190/rafael/hound/wiki/Starting-a-webdriver-server).
 
 #### If you're using Phoenix
 Ensure the server is started when your tests are run. In `config/test.exs` change the `server` option of your endpoint config to `true`:
@@ -81,7 +81,7 @@ Example:
 
 ```config :hound, driver: "phantomjs"```
 
-[More examples here](https://github.com/HashNuke/hound/blob/master/notes/configuring-hound.md).
+[More examples here](https://192.168.0.190/rafael/hound/blob/master/notes/configuring-hound.md).
 
 ## Usage
 
@@ -114,13 +114,13 @@ The documentation pages include examples under each function.
 
 The docs are at <http://hexdocs.pm/hound>.
 
-### More examples? [Checkout Hound's own test cases](https://github.com/HashNuke/hound/tree/master/test/helpers)
+### More examples? [Checkout Hound's own test cases](https://192.168.0.190/rafael/hound/tree/master/test/helpers)
 
 ## FAQ
 
 #### Can I run multiple browser sessions simultaneously
 
-Oh yeah ~! [Here is an example](https://github.com/HashNuke/hound/blob/master/test/multiple_browser_session_test.exs).
+Oh yeah ~! [Here is an example](https://192.168.0.190/rafael/hound/blob/master/test/multiple_browser_session_test.exs).
 
 If you are running PhantomJs, take a look at the *Caveats* section below.
 

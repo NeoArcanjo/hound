@@ -1,10 +1,9 @@
 defmodule Hound.Browser.Firefox.Profile do
   @moduledoc false
 
-  @default_prefs %{
-  }
+  @default_prefs %{}
 
-  defstruct [prefs: @default_prefs]
+  defstruct prefs: @default_prefs
 
   def new do
     %__MODULE__{}
@@ -31,9 +30,11 @@ defmodule Hound.Browser.Firefox.Profile do
 
   def dump(profile) do
     files = [{'user.js', serialize_preferences(profile)}]
+
     case :zip.create('profile.zip', files, [:memory]) do
       {:ok, {_filename, binary}} ->
         {:ok, Base.encode64(binary)}
+
       {:error, _reason} = error ->
         error
     end

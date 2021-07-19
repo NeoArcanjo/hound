@@ -22,7 +22,6 @@ defmodule Hound.Helpers do
     end
   end
 
-
   defmacro hound_session(opts \\ []) do
     quote do
       setup do
@@ -34,5 +33,4 @@ defmodule Hound.Helpers do
       end
     end
   end
-
 end

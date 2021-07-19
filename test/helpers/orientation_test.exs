@@ -7,8 +7,6 @@ defmodule OrientationTest do
   # test "should get current orientation" do
   # end
 
-
   # test "should set orientation" do
   # end
-
 end

@@ -17,7 +17,6 @@ defmodule Hound.Helpers.Session do
     Hound.SessionServer.change_current_session_for_pid(self(), session_name, opts)
   end
 
-
   @doc """
   When running multiple browser sessions, calling this function will switch to the default browser session.
 
@@ -29,7 +28,6 @@ defmodule Hound.Helpers.Session do
   def change_to_default_session do
     change_session_to(:default)
   end
-
 
   @doc """
   Execute commands in a separate browser session.
@@ -44,9 +42,8 @@ defmodule Hound.Helpers.Session do
     change_session_to(session_name)
     result = apply(func, [])
     change_session_to(previous_session_name)
-    result 
+    result
   end
-
 
   @doc """
   Starts a Hound session.
@@ -97,7 +94,6 @@ defmodule Hound.Helpers.Session do
     Hound.SessionServer.session_for_pid(self(), opts)
   end
 
-
   @doc """
   Ends a Hound session that is associated with a pid.
 
@@ -107,19 +103,15 @@ defmodule Hound.Helpers.Session do
     Hound.SessionServer.destroy_sessions_for_pid(pid)
   end
 
-
   @doc false
   def current_session_id do
     Hound.SessionServer.current_session_id(self()) ||
-      raise "could not find a session for process #{inspect self()}"
+      raise "could not find a session for process #{inspect(self())}"
   end
-
 
   @doc false
   def current_session_name do
-      Hound.SessionServer.current_session_name(self()) ||
-        raise "could not find a session for process #{inspect self()}"
-
-
+    Hound.SessionServer.current_session_name(self()) ||
+      raise "could not find a session for process #{inspect(self())}"
   end
 end

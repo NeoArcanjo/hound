@@ -3,26 +3,23 @@ defmodule HoundTest do
   use Hound.Helpers
 
   setup do
-    Hound.start_session
+    Hound.start_session()
     parent = self()
-    on_exit fn-> Hound.end_session(parent) end
+    on_exit(fn -> Hound.end_session(parent) end)
     :ok
   end
 
   test "should return driver info" do
-    {:ok, driver_info} = Hound.driver_info
+    {:ok, driver_info} = Hound.driver_info()
     assert driver_info[:driver_type] == nil
   end
 
-
   test "should return the current session ID" do
-    assert is_binary(Hound.current_session_id)
+    assert is_binary(Hound.current_session_id())
   end
-
 
   test "Should destroy all sessions for current process" do
-    Hound.end_session
+    Hound.end_session()
     assert Hound.SessionServer.all_sessions_for_pid(self()) == %{}
   end
-
 end

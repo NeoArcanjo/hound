@@ -14,10 +14,9 @@ defmodule Hound.Helpers.Mouse do
   """
   @spec mouse_down(integer) :: :ok
   def mouse_down(button \\ 0) do
-    session_id = Hound.current_session_id
+    session_id = Hound.current_session_id()
     make_req(:post, "session/#{session_id}/buttondown", %{button: button})
   end
-
 
   @doc """
   Triggers a mouseup event on the current position of the mouse, which can be set through `Helpers.Element.move_to/3`.
@@ -30,7 +29,7 @@ defmodule Hound.Helpers.Mouse do
   """
   @spec mouse_up(integer) :: :ok
   def mouse_up(button \\ 0) do
-    session_id = Hound.current_session_id
+    session_id = Hound.current_session_id()
     make_req(:post, "session/#{session_id}/buttonup", %{button: button})
   end
 end

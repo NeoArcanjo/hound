@@ -4,7 +4,7 @@ defmodule Hound.Browser.FirefoxTest do
   alias Hound.Browser.Firefox
 
   test "default_user_agent" do
-    assert Firefox.default_user_agent == :firefox
+    assert Firefox.default_user_agent() == :firefox
   end
 
   test "default_capabilities" do

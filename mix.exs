@@ -4,46 +4,46 @@ defmodule Hound.Mixfile do
   @version "1.1.1"
 
   def project do
-    [ app: :hound,
+    [
+      app: :hound,
       version: @version,
-      elixir: ">= 1.4.0",
-      description: "Webdriver library for integration testing and browser automation",
-      source_url: "https://github.com/HashNuke/hound",
+      elixir: ">= 1.9.0",
+      description:
+        "Webdriver library for integration testing and browser automation - Forked from HashNuke/hound",
+      source_url: "http://192.168.0.190/rafael/hound",
       deps: deps(),
       package: package(),
       docs: [source_ref: "#{@version}", extras: ["README.md"], main: "readme"]
     ]
   end
 
-
   def application do
     [
       extra_applications: [:logger],
-      mod: {Hound, []},
-      description: 'Integration testing and browser automation library',
+      mod: {Hound.Application, []},
+      description: 'Integration testing and browser automation library'
     ]
   end
-
 
   defp deps do
     [
-      {:hackney, "~> 1.5"},
-      {:jason,  "~> 1.1"},
+      {:hackney, "~> 1.17"},
+      {:jason, "~> 1.2.2"},
       {:earmark, "~> 1.2", only: :dev},
-      {:ex_doc,  "~> 0.16", only: :dev}
+      {:ex_doc, "~> 0.16", only: :dev},
+      {:credo, ">= 0.0.0", only: [:dev, :test]},
+      {:doctor, "~> 0.18.0", only: :dev}
     ]
   end
 
-
   defp package do
     [
-      maintainers: ["Akash Manohar J", "Daniel Perez"],
+      maintainers: ["Rafael Arcanjo"],
       licenses: ["MIT"],
       links: %{
-        "GitHub" => "https://github.com/HashNuke/hound",
+        "Git" => "http://192.168.0.190/rafael/hound",
         "Docs" => "http://hexdocs.pm/hound/"
       }
     ]
   end
-
 end

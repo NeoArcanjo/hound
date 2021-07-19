@@ -29,11 +29,13 @@ defmodule Hound.Metadata do
   @doc """
   Appends the metdata to the user_agent string.
   """
-  @spec append(String.t, nil | map | String.t) :: String.t
+  @spec append(String.t(), nil | map | String.t()) :: String.t()
   def append(user_agent, nil), do: user_agent
+
   def append(user_agent, metadata) when is_map(metadata) or is_list(metadata) do
     append(user_agent, format(metadata))
   end
+
   def append(user_agent, metadata) when is_binary(metadata) do
     "#{user_agent}/#{metadata}"
   end
@@ -42,9 +44,9 @@ defmodule Hound.Metadata do
   Formats a string to a valid UserAgent string to be passed to be
   appended to the browser user agent.
   """
-  @spec format(map | Keyword.t) :: String.t
+  @spec format(map | Keyword.t()) :: String.t()
   def format(metadata) do
-    encoded = {:v1, metadata} |> :erlang.term_to_binary |> Base.url_encode64
+    encoded = {:v1, metadata} |> :erlang.term_to_binary() |> Base.url_encode64()
     "#{@metadata_prefix} (#{encoded})"
   end
 
@@ -52,22 +54,23 @@ defmodule Hound.Metadata do
   Extracts and parses the metadata contained in a user agent string.
   If the user agent does not contain any metadata, an empty map is returned.
   """
-  @spec parse(String.t) :: %{String.t => String.t}
+  @spec parse(String.t()) :: %{String.t() => String.t()}
   def extract(str) do
-    ua_last_part = str |> String.split("/") |> List.last
+    ua_last_part = str |> String.split("/") |> List.last()
+
     case Regex.run(@extract_regexp, ua_last_part) do
       [_, metadata] -> parse(metadata)
-      _             -> %{}
+      _ -> %{}
     end
   end
 
   defp parse(encoded_metadata) do
     encoded_metadata
-    |> Base.url_decode64!
-    |> :erlang.binary_to_term
+    |> Base.url_decode64!()
+    |> :erlang.binary_to_term()
     |> case do
-         {:v1, metadata} -> metadata
-         _               -> raise Hound.InvalidMetadataError, value: encoded_metadata
+      {:v1, metadata} -> metadata
+      _ -> raise Hound.InvalidMetadataError, value: encoded_metadata
     end
   end
 end

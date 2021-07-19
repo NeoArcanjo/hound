@@ -9,5 +9,4 @@ defmodule SavePageTest do
     path = save_page("screenshot-test.html")
     assert File.exists?(path)
   end
-
 end

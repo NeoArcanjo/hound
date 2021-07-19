@@ -8,7 +8,7 @@ defmodule Hound.Browser.Firefox do
   def default_user_agent, do: :firefox
 
   def default_capabilities(ua) do
-    {:ok, profile} = Profile.new |> Profile.set_user_agent(ua) |> Profile.dump
+    {:ok, profile} = Profile.new() |> Profile.set_user_agent(ua) |> Profile.dump()
     %{firefox_profile: profile}
   end
 end

@@ -2,20 +2,20 @@ defmodule Hound.RequestUtils do
   @moduledoc false
 
   def make_req(type, path, params \\ %{}, options \\ %{}, retries \\ retries())
+
   def make_req(type, path, params, options, 0) do
     send_req(type, path, params, options)
   end
+
   def make_req(type, path, params, options, retries) do
-    try do
-      case send_req(type, path, params, options) do
-        {:error, _} -> make_retry(type, path, params, options, retries)
-        result      -> result
-      end
-    rescue
-      _ -> make_retry(type, path, params, options, retries)
-    catch
-      _ -> make_retry(type, path, params, options, retries)
+    case send_req(type, path, params, options) do
+      {:error, _} -> make_retry(type, path, params, options, retries)
+      result -> result
     end
+  rescue
+    _ -> make_retry(type, path, params, options, retries)
+  catch
+    _ -> make_retry(type, path, params, options, retries)
   end
 
   defp make_retry(type, path, params, options, retries) do
@@ -26,14 +26,18 @@ defmodule Hound.RequestUtils do
   defp send_req(type, path, params, options) do
     url = get_url(path)
     has_body = params != %{} && type == :post
-    {headers, body} = cond do
-       has_body && options[:json_encode] != false ->
-        {[{"Content-Type", "text/json"}], Jason.encode!(params)}
-      has_body ->
-        {[], params}
-      true ->
-        {[], ""}
-    end
+
+    {headers, body} =
+      cond do
+        has_body && options[:json_encode] != false ->
+          {[{"Content-Type", "text/json"}], Jason.encode!(params)}
+
+        has_body ->
+          {[], params}
+
+        true ->
+          {[], ""}
+      end
 
     :hackney.request(type, url, headers, body, [:with_body | http_options()])
     |> handle_response({url, path, type}, options)
@@ -46,11 +50,14 @@ defmodule Hound.RequestUtils do
         Webdriver call status code #{code} for #{type} request #{url}.
         Check if webdriver server is running. Make sure it supports the feature being requested.
         """
+
       {:error, err} = value ->
         if options[:safe],
           do: value,
-          else: raise err
-      response -> response
+          else: raise(err)
+
+      response ->
+        response
     end
   end
 
@@ -80,7 +87,7 @@ defmodule Hound.RequestUtils do
   end
 
   defp get_url(path) do
-    {:ok, driver_info} = Hound.driver_info
+    {:ok, driver_info} = Hound.driver_info()
 
     host = driver_info[:host]
     port = driver_info[:port]
@@ -89,11 +96,11 @@ defmodule Hound.RequestUtils do
     "#{host}:#{port}/#{path_prefix}#{path}"
   end
 
-  defp http_options() do
+  defp http_options do
     Application.get_env(:hound, :http, [])
   end
 
-  defp retries() do
+  defp retries do
     Application.get_env(:hound, :retries, 0)
   end
 end
