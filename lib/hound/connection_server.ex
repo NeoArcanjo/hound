@@ -51,6 +51,23 @@ defmodule Hound.ConnectionServer do
     {:ok, Agent.get(__MODULE__, & &1.driver_info, 60_000)}
   end
 
+  def driver_info(data) do
+    Agent.update(__MODULE__, fn item -> item |> Map.replace!(:driver_info, data) end)
+  end
+
+  def driver_edit_host(data) when is_map(data) or is_list(data) do
+    Agent.update(__MODULE__, fn item ->
+      driver_info = Map.get(item, :driver_info)
+
+      host = data[:host] || driver_info[:host]
+      port = data[:port] || driver_info[:port]
+
+      new_driver_info = Map.merge(driver_info, %{host: host ,port: port})
+
+      item |> Map.replace!(:driver_info, new_driver_info)
+    end)
+  end
+
   def configs do
     {:ok, Agent.get(__MODULE__, & &1.configs, 60_000)}
   end

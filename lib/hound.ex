@@ -4,6 +4,14 @@ defmodule Hound do
     Hound.ConnectionServer.driver_info()
   end
 
+  def driver_info(data) do
+    Hound.ConnectionServer.driver_info(data)
+  end
+
+  def edit_host(data) do
+    Hound.ConnectionServer.driver_edit_host(data)
+  end
+
   @doc false
   def configs do
     Hound.ConnectionServer.configs()

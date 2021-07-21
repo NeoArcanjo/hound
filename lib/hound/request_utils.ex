@@ -40,6 +40,7 @@ defmodule Hound.RequestUtils do
       end
 
     :hackney.request(type, url, headers, body, [:with_body | http_options()])
+    |> IO.inspect(label: "hacking")
     |> handle_response({url, path, type}, options)
   end
 
@@ -89,6 +90,10 @@ defmodule Hound.RequestUtils do
   defp get_url(path) do
     {:ok, driver_info} = Hound.driver_info()
 
+    driver_info
+    |> IO.inspect(label: "teste")
+
+
     host = driver_info[:host]
     port = driver_info[:port]
     path_prefix = driver_info[:path_prefix]
@@ -96,8 +101,8 @@ defmodule Hound.RequestUtils do
     "#{host}:#{port}/#{path_prefix}#{path}"
   end
 
-  defp http_options do
-    Application.get_env(:hound, :http, [])
+  def http_options do
+    Application.get_env(:hound, :http,  [recv_timeout: 60_000, connect_timeout: 60_000, timeout: 60_000])
   end
 
   defp retries do
