@@ -1,5 +1,6 @@
 defmodule Hound do
-  @doc false
+  @moduledoc false
+
 
   @doc false
   def configs do
@@ -11,7 +12,7 @@ defmodule Hound do
   defdelegate start_session(opts), to: Hound.Helpers.Session
 
   defdelegate driver_info, to: Hound.ConnectionServer
-  defdelegate driver_edit_host(, to: Hound.ConnectionServer
+  defdelegate driver_edit_host(data), to: Hound.ConnectionServer
 
   @doc "See `Hound.Helpers.Session.end_session/1`"
   defdelegate end_session, to: Hound.Helpers.Session
