@@ -93,7 +93,6 @@ defmodule Hound.RequestUtils do
     driver_info
     |> IO.inspect(label: "teste")
 
-
     host = driver_info[:host]
     port = driver_info[:port]
     path_prefix = driver_info[:path_prefix]
@@ -102,7 +101,11 @@ defmodule Hound.RequestUtils do
   end
 
   def http_options do
-    Application.get_env(:hound, :http,  [recv_timeout: 60_000, connect_timeout: 60_000, timeout: 60_000])
+    Application.get_env(:hound, :http,
+      recv_timeout: 60_000,
+      connect_timeout: 60_000,
+      timeout: 60_000
+    )
   end
 
   defp retries do

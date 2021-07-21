@@ -62,7 +62,7 @@ defmodule Hound.ConnectionServer do
       host = data[:host] || driver_info[:host]
       port = data[:port] || driver_info[:port]
 
-      new_driver_info = Map.merge(driver_info, %{host: host ,port: port})
+      new_driver_info = Map.merge(driver_info, %{host: host, port: port})
 
       item |> Map.replace!(:driver_info, new_driver_info)
     end)

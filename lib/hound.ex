@@ -1,7 +1,6 @@
 defmodule Hound do
   @moduledoc false
 
-
   @doc false
   def configs do
     Hound.ConnectionServer.configs()
