@@ -1,7 +1,7 @@
 defmodule Hound.Mixfile do
   use Mix.Project
 
-  @version "1.2.0" 
+  @version "1.2.0"
 
   def project do
     [
@@ -38,7 +38,7 @@ defmodule Hound.Mixfile do
 
   defp package do
     [
-      maintainers: ["Rafael Arcanjo"],
+      maintainers: ["Leonardo Telles de Sá Ferreira","Rafael Arcanjo"],
       licenses: ["MIT"],
       links: %{
         "Git" => "http://192.168.0.190/rafael/hound",
