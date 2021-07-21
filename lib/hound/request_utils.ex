@@ -40,7 +40,6 @@ defmodule Hound.RequestUtils do
       end
 
     :hackney.request(type, url, headers, body, [:with_body | http_options()])
-    |> IO.inspect(label: "hacking")
     |> handle_response({url, path, type}, options)
   end
 
@@ -89,9 +88,6 @@ defmodule Hound.RequestUtils do
 
   defp get_url(path) do
     {:ok, driver_info} = Hound.driver_info()
-
-    driver_info
-    |> IO.inspect(label: "teste")
 
     host = driver_info[:host]
     port = driver_info[:port]
