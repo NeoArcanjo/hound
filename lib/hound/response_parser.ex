@@ -31,10 +31,14 @@ defmodule Hound.ResponseParser do
   end
 
   def parse(parser, path, code, _headers, raw_content) do
-    case Hound.ResponseParser.decode_content(raw_content) do
+    IO.puts("dentro do parse 2")
+    v = case Hound.ResponseParser.decode_content(raw_content) |> IO.inspect(label: "dentro do decode_content") do
       {:ok, body} -> parser.handle_response(path, code, body)
       _ -> :error
     end
+
+    IO.puts("saindo do parse 2")
+    v
   end
 
   @doc """

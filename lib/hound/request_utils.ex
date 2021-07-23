@@ -44,6 +44,8 @@ defmodule Hound.RequestUtils do
   end
 
   defp handle_response({:ok, code, headers, body}, {url, path, type}, options) do
+    body |> IO.inspect(label: "body sended")
+
     case Hound.ResponseParser.parse(response_parser(), path, code, headers, body) |> IO.inspect(label: "dentro do hound fazendo reque") do
       :error ->
         raise """
@@ -52,10 +54,10 @@ defmodule Hound.RequestUtils do
         """
 
       {:error, err} = value ->
-        value |> IO.inspect(label: "dentro do error")
-        # if options[:safe],
-        #   do: value,
-        #   else: raise(err)
+
+        if options[:safe],
+          do: value,
+          else: raise(err)
 
       response ->
         response
