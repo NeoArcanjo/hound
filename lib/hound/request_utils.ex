@@ -52,9 +52,10 @@ defmodule Hound.RequestUtils do
         """
 
       {:error, err} = value ->
-        if options[:safe],
-          do: value,
-          else: raise(err)
+        value |> IO.inspect(label: "dentro do error")
+        # if options[:safe],
+        #   do: value,
+        #   else: raise(err)
 
       response ->
         response
