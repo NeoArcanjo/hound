@@ -44,9 +44,7 @@ defmodule Hound.RequestUtils do
   end
 
   defp handle_response({:ok, code, headers, body}, {url, path, type}, options) do
-    body |> IO.inspect(label: "body sended")
-
-    case Hound.ResponseParser.parse(response_parser(), path, code, headers, body) |> IO.inspect(label: "dentro do hound fazendo reque") do
+    case Hound.ResponseParser.parse(response_parser(), path, code, headers, body)  do
       :error ->
         raise """
         Webdriver call status code #{code} for #{type} request #{url}.
@@ -54,7 +52,6 @@ defmodule Hound.RequestUtils do
         """
 
       {:error, err} = value ->
-
         if options[:safe],
           do: value,
           else: raise(err)
